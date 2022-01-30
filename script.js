@@ -23,20 +23,14 @@ let controller = {
     num1 : NaN,
     nextOperation : "",
     newNumberInputed : false,
-    callOperation : function(currentNum,operation){
-        if(!this.newNumberInputed){
-            this.nextOperation = operation;
-            return this.num1;
-        }
-        else
-            this.newNumberInputed = false;
-
+    callOperation : function(currentNum,operation){   
         if(!this.num1){
             this.num1 = parseFloat(currentNum);
         }
-        else{
+        else if(this.newNumberInputed){
             this.num1 = operator(this.nextOperation, this.num1, parseFloat(currentNum));
         }
+        this.newNumberInputed = false;
         this.nextOperation = operation;        
         return this.num1;
     },
@@ -46,13 +40,10 @@ let controller = {
         this.operation = "";
     },
     callEqual(currentNum){
-        if(!this.newNumberInputed)
-            return currentNum;
-        if(!this.num1)
+        if(!this.num1 || !this.newNumberInputed)
             return currentNum;
         let result = operator(this.nextOperation, this.num1, parseFloat(currentNum));
         this.clear();
-        this.newNumberInputed = true;
         return result;
     }
 
